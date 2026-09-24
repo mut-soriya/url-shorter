@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="ShortURL — a modern, fast and secure URL shortener with link management and analytics."
+  >
+
+  <title>ShortURL — Simple. Fast. Shareable.</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
+
+  <script
+    defer
+    src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+  </script>
+
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+
+  <!-- =========================
+       BACKGROUND
+  ========================== -->
+
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <div class="background" aria-hidden="true">
+    <span class="blob blob-one"></span>
+    <span class="blob blob-two"></span>
+    <span class="grid"></span>
+    <span class="orb orb-one"></span>
+    <span class="orb orb-two"></span>
+  </div>
+
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+
+  <header class="site-header" id="siteHeader">
+
+    <nav class="navbar container" aria-label="Primary navigation">
+
+      <a class="brand" href="#home" aria-label="ShortURL home">
+
+        <span class="brand-mark">
+          <span></span>
+        </span>
+
+        <span>
+          Short<span>URL</span>
+        </span>
+
+      </a>
+
+
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-label="Open navigation menu"
+        aria-controls="mainNav"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+
+      <div class="nav-panel" id="mainNav">
+
+        <a class="nav-link active" href="#home">Home</a>
+
+        <a class="nav-link" href="#features">Features</a>
+
+        <a class="nav-link" href="#how-it-works">
+          How it works
+        </a>
+
+        <a class="nav-link" href="#analytics">
+          Analytics
+        </a>
+
+        <a class="nav-link" href="#links">
+          My links
+        </a>
+
+        <a class="nav-link" href="#faq">
+          FAQ
+        </a>
+
+
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          type="button"
+          aria-label="Switch theme"
+        >
+          <span class="theme-icon">☼</span>
+          <span class="theme-label">Theme</span>
+        </button>
+
+      </div>
+
+
+      <div class="user-area">
+
+        <span id="userName"></span>
+
+        <button id="logoutBtn" type="button">
+          Logout
+        </button>
+
+      </div>
+
+    </nav>
+
+  </header>
+
+
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+
+  <main>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <section class="hero section" id="home">
+
+      <div
+        class="hero-decor hero-ring"
+        aria-hidden="true">
+      </div>
+
+
+      <div class="container hero-grid">
+
+
+        <!-- HERO COPY -->
+
+        <div class="hero-copy reveal">
+
+          <div class="eyebrow">
+
+            <span class="status-dot"></span>
+
+            Fast URL shortening, made simple
+
+          </div>
+
+
+          <h1>
+            Make every link
+            <span>shorter.</span>
+            <br>
+            Make every share
+            <strong>better.</strong>
+          </h1>
+
+
+          <p class="hero-text">
+            Turn long URLs into clean, memorable links in seconds.
+            Manage your links, create QR codes and explore your
+            real link analytics — all in one place.
+          </p>
+
+
+          <!-- URL SHORTENER -->
+
+          <form
+            class="shortener-card glass"
+            id="shortenerForm"
+            novalidate
+          >
+
+            <label for="urlInput">
+              Paste your long URL
+            </label>
+
+
+            <div class="input-row">
+
+              <div class="url-field">
+
+                <span aria-hidden="true">
+                  ↗
+                </span>
+
+                <input
+                  id="urlInput"
+                  name="url"
+                  type="url"
+                  placeholder="https://example.com/your-long-link"
+                  autocomplete="url"
+                  spellcheck="false"
+                  required
+                />
+
+              </div>
+
+
+              <input
+                type="text"
+                id="customCode"
+                placeholder="Custom code (optional)"
+                maxlength="10"
+                autocomplete="off"
+              />
+
+            </div>
+
+
+            <button
+              class="primary-btn"
+              id="shortenBtn"
+              type="submit"
+            >
+
+              <span class="btn-text">
+                Shorten URL
+              </span>
+
+              <span
+                class="spinner"
+                aria-hidden="true">
+              </span>
+
+            </button>
+
+
+            <p
+              class="field-error"
+              id="urlError"
+              role="alert">
+            </p>
+
+
+            <div class="form-hint">
+
+              <span>✓</span>
+
+              Free to use · Account required
+
+            </div>
+
+          </form>
+
+
+          <!-- RESULT -->
+
+          <div
+            class="result-card glass"
+            id="resultCard"
+            hidden
+            aria-live="polite"
+          >
+
+            <div class="result-icon">
+              ✓
+            </div>
+
+
+            <div class="result-main">
+
+              <span class="result-label">
+                Your shortened link
+              </span>
+
+
+              <a
+                id="resultUrl"
+                class="result-url"
+                href="#"
+                target="_blank"
+                rel="noopener"
+              >
+              </a>
+
+
+              <span
+                id="resultOriginal"
+                class="result-original">
+              </span>
+
+            </div>
+
+
+            <div class="result-actions">
+
+              <button
+                class="icon-btn"
+                id="copyResultBtn"
+                type="button"
+                aria-label="Copy shortened URL"
+                title="Copy"
+              >
+                ⧉
+              </button>
+
+
+              <button
+                class="icon-btn"
+                id="qrResultBtn"
+                type="button"
+                aria-label="Create QR code"
+                title="QR code"
+              >
+                ▦
+              </button>
+
+
+              <button
+                class="icon-btn"
+                id="shareResultBtn"
+                type="button"
+                aria-label="Share shortened URL"
+                title="Share"
+              >
+                ↗
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             DASHBOARD PREVIEW
+        ========================== -->
+
+        <div
+          class="hero-visual reveal reveal-delay-1"
+          aria-label="Dashboard preview"
+        >
+
+          <div class="floating-chip chip-top">
+            ⚡ Instant links
+          </div>
+
+
+          <div
+            class="dashboard glass"
+            id="dashboardPreview"
+          >
+
+
+            <div class="dash-top">
+
+              <div>
+
+                <span class="mini-label">
+                  Workspace
+                </span>
+
+                <h2>
+                  Link overview
+                </h2>
+
+              </div>
+
+
+              <span class="live-badge">
+
+                <i></i>
+
+                Live
+
+              </span>
+
+            </div>
+
+
+            <!-- PREVIEW METRICS -->
+
+            <div class="metric-grid">
+
+              <article class="metric-card">
+
+                <span>
+                  Total links
+                </span>
+
+                <strong id="previewLinks">
+                  0
+                </strong>
+
+                <small>
+                  Stored in your account
+                </small>
+
+              </article>
+
+
+              <article class="metric-card">
+
+                <span>
+                  Total clicks
+                </span>
+
+                <strong id="previewClicks">
+                  0
+                </strong>
+
+                <small>
+                  Tracked from your links
+                </small>
+
+              </article>
+
+            </div>
+
+
+            <!-- PREVIEW CHART -->
+
+            <div class="chart-card">
+
+              <div class="chart-heading">
+
+                <span>
+                  Activity
+                </span>
+
+                <span>
+                  Last 7 days
+                </span>
+
+              </div>
+
+
+              <div
+                class="bars"
+                id="previewBars"
+                aria-label="Link activity chart"
+              >
+              </div>
+
+            </div>
+
+
+            <!-- PREVIEW LINKS -->
+
+            <div
+              class="dash-list"
+              id="previewLinksList"
+            >
+
+              <div>
+                <span class="link-dot"></span>
+
+                <span>
+                  Your recent links will appear here
+                </span>
+
+                <b>
+                  Live
+                </b>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="floating-chip chip-bottom">
+            ▣ QR ready
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         FEATURES
+    ========================== -->
+
+    <section
+      class="section section-soft"
+      id="features"
+    >
+
+      <div class="container">
+
+        <div class="section-heading reveal">
+
+          <span class="section-kicker">
+            FEATURES
+          </span>
+
+          <h2>
+            Everything you need to
+            <span>share smarter.</span>
+          </h2>
+
+          <p>
+            A focused toolkit with a polished interface
+            that stays easy to understand.
+          </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+
+          <article class="feature-card glass reveal">
+
+            <div class="feature-icon">
+              ⚡
+            </div>
+
+            <h3>
+              Instant shortening
+            </h3>
+
+            <p>
+              Paste a URL, validate it and create a
+              unique short link in seconds.
+            </p>
+
+            <span class="feature-arrow">
+              ↗
+            </span>
+
+          </article>
+
+
+          <article
+            class="feature-card glass reveal reveal-delay-1">
+
+            <div class="feature-icon">
+              ⧉
+            </div>
+
+            <h3>
+              One-click copy
+            </h3>
+
+            <p>
+              Copy generated links with clear success
+              feedback and a fallback for older browsers.
+            </p>
+
+            <span class="feature-arrow">
+              ↗
+            </span>
+
+          </article>
+
+
+          <article
+            class="feature-card glass reveal reveal-delay-2">
+
+            <div class="feature-icon">
+              ▦
+            </div>
+
+            <h3>
+              QR codes
+            </h3>
+
+            <p>
+              Generate a QR code for any saved short
+              link and download it for sharing.
+            </p>
+
+            <span class="feature-arrow">
+              ↗
+            </span>
+
+          </article>
+
+
+          <article class="feature-card glass reveal">
+
+            <div class="feature-icon">
+              ⌁
+            </div>
+
+            <h3>
+              Link management
+            </h3>
+
+            <p>
+              Search, copy, open and delete your links
+              from one clean workspace.
+            </p>
+
+            <span class="feature-arrow">
+              ↗
+            </span>
+
+          </article>
+
+
+          <article
+            class="feature-card glass reveal reveal-delay-1">
+
+            <div class="feature-icon">
+              ◔
+            </div>
+
+            <h3>
+              Real analytics
+            </h3>
+
+            <p>
+              Track link clicks and activity using
+              data stored in your account.
+            </p>
+
+            <span class="feature-arrow">
+              ↗
+            </span>
+
+          </article>
+
+
+          <article
+            class="feature-card glass reveal reveal-delay-2">
+
+            <div class="feature-icon">
+              ☼
+            </div>
+
+            <h3>
+              Dark & light
+            </h3>
+
+            <p>
+              Switch themes anytime. Your preference
+              is remembered for the next visit.
+            </p>
+
+            <span class="feature-arrow">
+              ↗
+            </span>
+
+          </article>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         HOW IT WORKS
+    ========================== -->
+
+    <section
+      class="section"
+      id="how-it-works"
+    >
+
+      <div class="container">
+
+        <div class="section-heading reveal">
+
+          <span class="section-kicker">
+            HOW IT WORKS
+          </span>
+
+          <h2>
+            Three steps.
+            <span>Zero confusion.</span>
+          </h2>
+
+        </div>
+
+
+        <div class="steps">
+
+
+          <article class="step reveal">
+
+            <span class="step-number">
+              01
+            </span>
+
+            <div class="step-line"></div>
+
+            <h3>
+              Paste
+            </h3>
+
+            <p>
+              Enter any valid HTTP or HTTPS URL
+              into the shortener.
+            </p>
+
+          </article>
+
+
+          <article
+            class="step reveal reveal-delay-1">
+
+            <span class="step-number">
+              02
+            </span>
+
+            <div class="step-line"></div>
+
+            <h3>
+              Shorten
+            </h3>
+
+            <p>
+              Validation runs first, then a unique
+              short code is generated.
+            </p>
+
+          </article>
+
+
+          <article
+            class="step reveal reveal-delay-2">
+
+            <span class="step-number">
+              03
+            </span>
+
+            <div class="step-line"></div>
+
+            <h3>
+              Share
+            </h3>
+
+            <p>
+              Copy, share or turn your new link
+              into a QR code instantly.
+            </p>
+
+          </article>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         ANALYTICS
+    ========================== -->
+
+    <section
+      class="section section-soft"
+      id="analytics"
+    >
+
+      <div class="container">
+
+
+        <div
+          class="section-heading split-heading reveal"
+        >
+
+          <div>
+
+            <span class="section-kicker">
+              DASHBOARD
+            </span>
+
+            <h2>
+              Know what your
+              <span>links are doing.</span>
+            </h2>
+
+          </div>
+
+
+          <span class="demo-note">
+            LIVE ANALYTICS · ACCOUNT DATA
+          </span>
+
+        </div>
+
+
+
+        <div class="analytics-grid">
+
+
+          <!-- TOTAL LINKS -->
+
+          <article class="big-stat glass reveal">
+
+            <span>
+              Total Links
+            </span>
+
+            <strong data-counter="links">
+              0
+            </strong>
+
+            <small>
+              Links in your account
+            </small>
+
+          </article>
+
+
+
+          <!-- TOTAL CLICKS -->
+
+          <article
+            class="big-stat glass reveal reveal-delay-1">
+
+            <span>
+              Total Clicks
+            </span>
+
+            <strong data-counter="clicks">
+              0
+            </strong>
+
+            <small>
+              Real link clicks
+            </small>
+
+          </article>
+
+
+
+          <!-- ACTIVE LINKS -->
+
+          <article
+            class="big-stat glass reveal reveal-delay-2">
+
+            <span>
+              Active Links
+            </span>
+
+            <strong data-counter="active">
+              0
+            </strong>
+
+            <small>
+              Links with activity
+            </small>
+
+          </article>
+
+
+
+          <!-- ACTIVITY CHART -->
+
+          <article
+            class="analytics-chart glass reveal"
+          >
+
+            <div class="chart-heading">
+
+              <strong>
+                Link activity
+              </strong>
+
+              <span>
+                Last 7 days
+              </span>
+
+            </div>
+
+
+            <div
+              class="large-bars"
+              id="analyticsBars"
+            >
+            </div>
+
+          </article>
+
+
+
+          <!-- TOP LINKS -->
+
+          <div
+            class="top-links"
+            id="topLinks"
+          >
+
+            <div class="top-links-header">
+
+              <h3>
+                Top Links
+              </h3>
+
+              <span>
+                Most clicked
+              </span>
+
+            </div>
+
+
+            <div id="topLinksList">
+
+              <p class="analytics-empty">
+                Loading link analytics...
+              </p>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         MY LINKS
+    ========================== -->
+
+    <section
+      class="section"
+      id="links"
+    >
+
+      <div class="container">
+
+
+        <div
+          class="section-heading split-heading reveal"
+        >
+
+          <div>
+
+            <span class="section-kicker">
+              MY LINKS
+            </span>
+
+            <h2>
+              Your
+              <span>link library.</span>
+            </h2>
+
+          </div>
+
+
+          <button
+            class="ghost-btn"
+            id="clearLinksBtn"
+            type="button"
+          >
+            Clear all
+          </button>
+
+        </div>
+
+
+
+        <div
+          class="links-toolbar glass reveal"
+        >
+
+          <div class="search-field">
+
+            <span>
+              ⌕
+            </span>
+
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Search short or original URL..."
+              aria-label="Search links"
+            />
+
+          </div>
+
+
+          <span
+            class="link-count"
+            id="linkCount"
+          >
+            0 links
+          </span>
+
+        </div>
+
+
+
+        <div
+          class="links-list"
+          id="linksList"
+        >
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         FAQ
+    ========================== -->
+
+    <section
+      class="section section-soft"
+      id="faq"
+    >
+
+      <div class="container faq-wrap">
+
+
+        <div class="section-heading reveal">
+
+          <span class="section-kicker">
+            FAQ
+          </span>
+
+          <h2>
+            Questions,
+            <span>answered.</span>
+          </h2>
+
+        </div>
+
+
+
+        <div class="faq-list">
+
+
+          <details
+            class="faq-item glass reveal"
+          >
+
+            <summary>
+              Does this create real public short links?
+            </summary>
+
+            <p>
+              Yes. Short links are created through the
+              backend and stored in PostgreSQL. The backend
+              also provides the redirect endpoint for your
+              short URLs.
+            </p>
+
+          </details>
+
+
+
+          <details
+            class="faq-item glass reveal reveal-delay-1"
+          >
+
+            <summary>
+              Where are my links stored?
+            </summary>
+
+            <p>
+              Your links are stored in the PostgreSQL
+              database and associated with your authenticated
+              account.
+            </p>
+
+          </details>
+
+
+
+          <details
+            class="faq-item glass reveal reveal-delay-2"
+          >
+
+            <summary>
+              Are the analytics real?
+            </summary>
+
+            <p>
+              Yes. Link click counts are tracked by the
+              backend. Each redirect updates the click count
+              and records click history in the database.
+            </p>
+
+          </details>
+
+
+
+          <details
+            class="faq-item glass reveal"
+          >
+
+            <summary>
+              Can I create a custom short code?
+            </summary>
+
+            <p>
+              Yes. You can enter a custom code when creating
+              a link. The code must be between 3 and 10
+              characters and use supported letters, numbers,
+              underscores or hyphens.
+            </p>
+
+          </details>
+
+
+
+          <details
+            class="faq-item glass reveal"
+          >
+
+            <summary>
+              Can I use this on mobile?
+            </summary>
+
+            <p>
+              Yes. The layout, navigation, controls and
+              animations adapt for smaller screens, with
+              heavy effects reduced on mobile.
+            </p>
+
+          </details>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer class="footer">
+
+    <div class="container footer-inner">
+
+
+      <a
+        class="brand"
+        href="#home"
+      >
+
+        <span class="brand-mark">
+          <span></span>
+        </span>
+
+        <span>
+          Short<span>URL</span>
+        </span>
+
+      </a>
+
+
+      <p>
+        Built as a full-stack URL shortening project.
+      </p>
+
+
+      <span>
+        © <span id="year"></span> ShortURL
+      </span>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- =========================
+       QR MODAL
+  ========================== -->
+
+  <div
+    class="modal-backdrop"
+    id="qrModal"
+    hidden
+  >
+
+    <div
+      class="modal glass"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="qrTitle"
+    >
+
+      <button
+        class="modal-close"
+        id="qrClose"
+        type="button"
+        aria-label="Close QR code"
+      >
+        ×
+      </button>
+
+
+      <span class="section-kicker">
+        QR CODE
+      </span>
+
+
+      <h2 id="qrTitle">
+        Scan your link
+      </h2>
+
+
+      <p id="qrSubtitle"></p>
+
+
+      <div
+        class="qr-box"
+        id="qrBox"
+      >
+      </div>
+
+
+      <button
+        class="primary-btn full-btn"
+        id="downloadQrBtn"
+        type="button"
+      >
+        Download QR
+      </button>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =========================
+       DELETE CONFIRMATION
+  ========================== -->
+
+  <div
+    class="modal-backdrop"
+    id="confirmModal"
+    hidden
+  >
+
+    <div
+      class="modal glass small-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="confirmTitle"
+    >
+
+      <span class="warning-icon">
+        !
+      </span>
+
+
+      <h2 id="confirmTitle">
+        Delete link?
+      </h2>
+
+
+      <p>
+        This action permanently removes the link
+        from your account.
+      </p>
+
+
+      <div class="modal-actions">
+
+        <button
+          class="ghost-btn"
+          id="cancelDelete"
+          type="button"
+        >
+          Cancel
+        </button>
+
+
+        <button
+          class="danger-btn"
+          id="confirmDelete"
+          type="button"
+        >
+          Delete
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =========================
+       TOAST
+  ========================== -->
+
+  <div
+    class="toast-stack"
+    id="toastStack"
+    aria-live="polite"
+    aria-atomic="true"
+  >
+  </div>
+
+
+</body>
+
+</html>
